@@ -144,3 +144,17 @@ def archive_or_activate_product(request, pk, format=None):
         }
 
         return Response(result)
+    
+@api_view(['GET'])
+def get_all_products(request, format=None):
+
+    # checks if the HTTP method is GET
+    if request.method == 'GET':
+
+        # filter the active products from Product model
+        products = Product.objects.filter(active=True)
+
+        # serialize it
+        serializer = ProductSerializer(products, many=True)
+
+        return Response(serializer.data)

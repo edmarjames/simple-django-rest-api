@@ -9,6 +9,7 @@ urlpatterns = [
     path('product/<int:pk>', views.single_product, name='product'),
     path('product/archive/<int:pk>', views.archive_or_activate_product, name='archive'),
     path('product/activate/<int:pk>', views.archive_or_activate_product, name='activate'),
+    path('products/active', views.get_all_products, name='all_products'),
 ]
 
 # do this if you want to obtain your results as json in the browser.
