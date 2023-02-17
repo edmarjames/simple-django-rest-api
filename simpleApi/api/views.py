@@ -10,8 +10,10 @@ from rest_framework import status
 # import product model
 from . models import Product
 # import serializer
-from . serializers import ProductSerializer
+from . serializers import ProductSerializer, RegistrationSerializer
 
+# import Token model
+from rest_framework.authtoken.models import Token
 
 
 # declare the HTTP method
@@ -158,3 +160,33 @@ def get_all_products(request, format=None):
         serializer = ProductSerializer(products, many=True)
 
         return Response(serializer.data)
+    
+@api_view(['POST'])
+def register(request):
+
+    # checks if the HTTP method is POST
+    if request.method == 'POST':
+
+        # get the data from the request body
+        serializer = RegistrationSerializer(data=request.data)
+
+        # declare an empty dict
+        data = {}
+
+        if serializer.is_valid():
+            # create a new user
+            user = serializer.save()
+
+            # add a 'response' property to the data dict
+            data['response'] = 'Successfully registered a new user!'
+
+            # get the token of the current logged in user, 'key' means get the raw authentication token
+            auth_token = Token.objects.get(user=user).key
+            
+            # add a 'auth_token' property to the data dict
+            data['token'] = auth_token
+
+        else:
+            data = serializer.errors
+
+        return Response(data)
