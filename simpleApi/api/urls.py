@@ -15,6 +15,8 @@ urlpatterns = [
     path('products/active', views.get_all_products, name='all_products'),
     path('register', views.register, name='register'),
     path('login', obtain_auth_token, name='login'),
+    path('users', views.get_users, name='users'),
+    path('users/<int:pk>', views.get_users, name='users')
 ]
 
 # do this if you want to obtain your results as json in the browser.

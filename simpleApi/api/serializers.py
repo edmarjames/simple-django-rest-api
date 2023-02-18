@@ -53,3 +53,22 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+    
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
+
+
+# Yes, there are other options available in addition to serializer.data to access the serialized data in Django serializers.
+
+# serializer.validated_data: This attribute returns a dictionary of deserialized data after validating the incoming data. This is useful when you want to work with the deserialized data in your view or API endpoint.
+
+# serializer.instance: This attribute returns the instance that the serializer was initialized with. This is useful when you want to update an existing object with the data that was sent in the request.
+
+# serializer.data.items(): You can use the items() method to get the serialized data as key-value pairs. This is useful when you need to iterate over the serialized data in a loop.
+
+# serializer.data.values(): You can use the values() method to get a list of the serialized data values. This is useful when you need to perform an operation on all the values in the serialized data.
+
+# serializer.data.get('field_name'): You can use the get() method to get a specific value from the serialized data by providing the name of the field. This is useful when you need to retrieve a specific value from the serialized data.

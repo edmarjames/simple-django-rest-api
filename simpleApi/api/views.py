@@ -9,8 +9,10 @@ from rest_framework import status
 
 # import product model
 from . models import Product
+# import User model
+from django.contrib.auth.models import User
 # import serializer
-from . serializers import ProductSerializer, RegistrationSerializer
+from . serializers import ProductSerializer, RegistrationSerializer, UserSerializer
 
 # import Token model
 from rest_framework.authtoken.models import Token
@@ -169,11 +171,18 @@ def register(request):
 
         # get the data from the request body
         serializer = RegistrationSerializer(data=request.data)
+        
 
         # declare an empty dict
         data = {}
 
         if serializer.is_valid():
+
+            # usage of serializer.validated_data
+            validated = serializer.validated_data
+            print(validated)
+            print(validated['username'])
+
             # create a new user
             user = serializer.save()
 
@@ -190,3 +199,42 @@ def register(request):
             data = serializer.errors
 
         return Response(data)
+    
+@api_view(['GET'])
+def get_users(request, pk = None):
+
+    # checks if the request method is 'GET'
+    if request.method == 'GET':
+
+        result = {}
+
+        if pk:
+            specific_user = User.objects.get(id=pk)
+
+            if specific_user is not None:
+                serializer = UserSerializer(specific_user)
+            else:
+                result['error'] = status.HTTP_404_NOT_FOUND
+
+            # usage of serializer.data.items()
+            for key, value in serializer.data.items():
+                print(f'{key} => {value}')
+
+            # usage of serializer.data.values()
+            values = serializer.data.values()
+            print(values)
+
+            # usage of serializer.data.get('field')
+            username = serializer.data.get('username')
+            print(f'This is the username {username}')
+
+        else:
+            # get all the users from User model
+            users = User.objects.all()
+
+            # serialize it
+            serializer = UserSerializer(users, many=True)
+
+        result['data'] = serializer.data
+
+        return Response(result)
