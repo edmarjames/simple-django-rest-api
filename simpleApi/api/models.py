@@ -1,13 +1,13 @@
-from django.db import models
+from django.db                          import models
 
 # import the User model
-from django.contrib.auth.models import User
+from django.contrib.auth.models         import User
 # import the post_save signal
-from django.db.models.signals import post_save
+from django.db.models.signals           import post_save
 # import the django receiver package
-from django.dispatch import receiver
+from django.dispatch                    import receiver
 # import token model
-from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.models    import Token
 
 
 # Create your models here.

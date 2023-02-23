@@ -1,10 +1,11 @@
 # import dependencies
-from rest_framework import serializers
+from rest_framework             import serializers
 
-# import model
-from . models import Product
+# import model/s
+from . models                   import Product
 # import default User model
 from django.contrib.auth.models import User
+
 
 # create a serializer class
 class ProductSerializer(serializers.ModelSerializer):
@@ -20,7 +21,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True, required=True)
 
-
     class Meta:
         model = User
         fields = ['username', 'email', 'password', 'password2']
@@ -29,7 +29,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {'write_only': True}
         }
-
 
     def save(self):
         # validation

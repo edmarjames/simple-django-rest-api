@@ -1,21 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts                   import render
 
-# import dependencies of rest framework
-from rest_framework.response import Response
-# import API view
-from rest_framework.decorators import api_view
-# import http status code
-from rest_framework import status
+# import Response, api_view, status and Token from rest framework
+from rest_framework.response            import Response
+from rest_framework.decorators          import api_view
+from rest_framework                     import status
+from rest_framework.authtoken.models    import Token
 
 # import product model
-from . models import Product
+from . models                           import Product
 # import User model
-from django.contrib.auth.models import User
-# import serializer
-from . serializers import ProductSerializer, RegistrationSerializer, UserSerializer
+from django.contrib.auth.models         import User
 
-# import Token model
-from rest_framework.authtoken.models import Token
+# import serializer
+from . serializers                      import ProductSerializer, RegistrationSerializer, UserSerializer
+
 
 
 # declare the HTTP method
@@ -61,7 +59,6 @@ def product_list(request, format=None):
             }
 
             return Response(message)
-
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def single_product(request, pk, format=None):
@@ -112,7 +109,6 @@ def single_product(request, pk, format=None):
         }
 
         return Response(message)
-
 
 @api_view(['PATCH'])
 def archive_or_activate_product(request, pk, format=None):
