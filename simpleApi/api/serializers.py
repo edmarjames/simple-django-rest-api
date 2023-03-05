@@ -19,36 +19,38 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class RegistrationSerializer(serializers.ModelSerializer):
 
+    # password2 is write-only fields, meaning that it is accepted during POST requests, but it will not be included in GET requests.
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True, required=True)
 
     class Meta:
         model = User
         fields = ['username', 'email', 'password', 'password2']
 
-        # keyword arguments
+        # extra_kwargs attribute is used to specify that the password field should be write-only.
         extra_kwargs = {
             'password': {'write_only': True}
         }
 
+
     def save(self):
-        # validation
+        # The save() method creates a new User instance and populates the username and email fields from the validated data
         user = User(
             username = self.validated_data['username'],
             email = self.validated_data['email'],
         )
 
-        # validation
+        # get the validated data and store it to variables
         password = self.validated_data['password']
         password2 = self.validated_data['password2']
 
-        # checks if password and password2 match
+        # It then validates that the password and password2 fields match.
         if password != password2:
             raise serializers.ValidationError({'password': 'Sorry, the password did not match'})
         
-        # hash the password
+        # If they do, it sets the password using user.set_password(password)
         user.set_password(password)
 
-        # save the user
+        # saves the user using user.save()
         user.save()
 
         return user
